@@ -5,6 +5,22 @@
 	<artifactId>wideorbitplugin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Wide orbit plugin</name>
+
+	<repositories>
+		<repository>
+			<url>http://thanod.nl/maven/</url>
+			<id>thanod</id>
+			<layout>default</layout>
+			<name>ThaNODnl repository</name>
+		</repository>
+		<repository>
+			<url>http://caliope-server1:81/</url>
+			<id>caliope</id>
+			<layout>default</layout>
+			<name>Caliope repository</name>
+		</repository>
+	</repositories>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -18,4 +34,35 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>nl.caliope</groupId>
+			<artifactId>onairdeskplugin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>nl.thanod.annotations</groupId>
+			<artifactId>spi</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+	</dependencies>
 </project>
