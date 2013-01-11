@@ -34,22 +34,15 @@ public class NowPlaying
 	public static NowPlaying read(File f)
 	{
 		XStream x = new XStream();
-		
+
 		// to read empty longs we need our own converter
 		x.registerConverter(new LongConverter());
-		
+
 		x.alias("nowplaying", NowPlaying.class);
 		try {
 			return (NowPlaying) x.fromXML(f);
 		} catch (ClassCastException ball) {
 			return null;
 		}
-	}
-
-	public static void main(String[] args)
-	{
-		NowPlaying p = NowPlaying.read(new File(
-				"\\\\caliope.local\\DATA\\Temp\\wideorbit\\wideorbbit_nowplaying.xml"));
-		System.out.println(p);
 	}
 }
