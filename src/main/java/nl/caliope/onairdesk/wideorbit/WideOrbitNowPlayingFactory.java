@@ -5,24 +5,26 @@ import org.json.JSONObject;
 import nl.caliope.onairdesk.PluginConfigurator;
 import nl.caliope.onairdesk.provider.NowPlayingFactory;
 import nl.caliope.onairdesk.provider.NowPlayingProvider;
+import nl.thanod.annotations.spi.ProviderFor;
 
-public class XMLNowPlayingFactory extends NowPlayingFactory
+@ProviderFor(NowPlayingFactory.class)
+public class WideOrbitNowPlayingFactory extends NowPlayingFactory
 {
 	@Override
 	public NowPlayingProvider create(JSONObject configuration)
 	{
-		return new XMLNowPlayingProvider(configuration);
+		return new WideOrbitNowPlayingProvider(configuration);
 	}
 
 	@Override
 	public String getDescription()
 	{
-		return "Wide orbit (RAS) XML file";
+		return "WideOrbit (XML file)";
 	}
 
 	@Override
 	public PluginConfigurator createConfigurator(JSONObject configuration)
 	{
-		return new XMLNowPlayingConfigurator(configuration);
+		return new WideOrbitNowPlayingConfigurator(configuration);
 	}
 }

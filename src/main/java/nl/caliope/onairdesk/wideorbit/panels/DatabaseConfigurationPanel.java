@@ -1,20 +1,20 @@
-package nl.caliope.onairdesk.wideorbit;
+package nl.caliope.onairdesk.wideorbit.panels;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.border.TitledBorder;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
+
+import net.miginfocom.swing.MigLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @SuppressWarnings("serial")
 public class DatabaseConfigurationPanel extends JPanel implements DocumentListener
@@ -74,7 +74,7 @@ public class DatabaseConfigurationPanel extends JPanel implements DocumentListen
 		String password = configuration.optString("password", "dmarc");
 		String host = configuration.optString("host", "localhost");
 		int port = configuration.optInt("port", 5432);
-		String database = configuration.optString("database", "onairdb");
+		String database = configuration.optString("database", "woar_server");
 
 		txtUsername.setText(username);
 		txtPassword.setText(password);
@@ -126,7 +126,6 @@ public class DatabaseConfigurationPanel extends JPanel implements DocumentListen
 		updateConfiguration();
 	}
 
-	@SuppressWarnings("serial")
 	private class FixedSizeNumberDocument extends PlainDocument
 	{
 

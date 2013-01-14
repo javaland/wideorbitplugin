@@ -5,15 +5,17 @@ import java.io.IOException;
 
 import nl.caliope.onairdesk.model.Item;
 import nl.caliope.onairdesk.provider.NowPlayingProvider;
+import nl.caliope.onairdesk.wideorbit.xml.NowPlaying;
+import nl.caliope.onairdesk.wideorbit.xml.NowPlayingParser;
 
 import org.json.JSONObject;
 
-public class XMLNowPlayingProvider extends NowPlayingProvider
+public class WideOrbitNowPlayingProvider extends NowPlayingProvider
 {
 
 	private File file;
 
-	public XMLNowPlayingProvider(JSONObject configuration)
+	public WideOrbitNowPlayingProvider(JSONObject configuration)
 	{
 		String path = configuration.optString("filename", null);
 		if (path == null)
@@ -21,6 +23,7 @@ public class XMLNowPlayingProvider extends NowPlayingProvider
 		else
 			this.file = new File(path);
 	}
+
 	@Override
 	public Item getPrevious(int n)
 	{
@@ -36,7 +39,7 @@ public class XMLNowPlayingProvider extends NowPlayingProvider
 			return null;
 		}
 
-		NowPlaying p = NowPlaying.read(this.getFile());
+		NowPlaying p = NowPlayingParser.parseFromXML(this.getFile());
 		if (p == null) {
 			// could not parse the nowplaying file
 			return null;
@@ -46,7 +49,7 @@ public class XMLNowPlayingProvider extends NowPlayingProvider
 			// p.cart is the most likely candidate for the item id
 			// otherwise we can only find the item by searching for name and
 			// artist
-			return super.getAutomationController().getItemProvider().getItem(p.cart);
+			return super.getAutomationController().getItemProvider().getItem(p.getCart());
 		} catch (IOException e) {
 			return null;
 		}

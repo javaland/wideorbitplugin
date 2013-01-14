@@ -1,4 +1,4 @@
-package nl.caliope.onairdesk.wideorbit;
+package nl.caliope.onairdesk.wideorbit.xml;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
