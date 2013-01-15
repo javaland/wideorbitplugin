@@ -2,9 +2,9 @@ package nl.caliope.onairdesk.wideorbit;
 
 import org.json.JSONObject;
 
-import nl.caliope.onairdesk.PluginConfigurator;
 import nl.caliope.onairdesk.provider.ItemFactory;
 import nl.caliope.onairdesk.provider.ItemProvider;
+import nl.caliope.onairdesk.provider.ProviderFactoryConfigurator;
 import nl.thanod.annotations.spi.ProviderFor;
 
 @ProviderFor(ItemFactory.class)
@@ -24,7 +24,7 @@ public class WideOrbitItemFactory extends ItemFactory
 	}
 
 	@Override
-	public PluginConfigurator createConfigurator(JSONObject configuration)
+	public ProviderFactoryConfigurator createConfigurator(JSONObject configuration)
 	{
 		return new WideOrbitDatabaseConfigurator(configuration);
 	}

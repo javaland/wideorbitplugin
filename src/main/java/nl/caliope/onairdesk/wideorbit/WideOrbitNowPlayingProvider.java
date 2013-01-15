@@ -17,7 +17,7 @@ public class WideOrbitNowPlayingProvider extends NowPlayingProvider
 
 	public WideOrbitNowPlayingProvider(JSONObject configuration)
 	{
-		String path = configuration.optString("filename", null);
+		String path = configuration.optString("nowplaying_path", null);
 		if (path == null)
 			this.file = null;
 		else
