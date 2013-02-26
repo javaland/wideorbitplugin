@@ -33,26 +33,28 @@ public class WideOrbitNowPlayingProvider extends NowPlayingProvider
 	@Override
 	public Item getCurrent()
 	{
-		if (this.getFile() == null || !this.getFile().exists()) {
-			// we can only find the currently playing item if a file is provided
-			// and exists
-			return null;
-		}
-
-		NowPlaying p = NowPlayingParser.parseFromXML(this.getFile());
-		if (p == null) {
-			// could not parse the nowplaying file
-			return null;
-		}
-
-		try {
-			// p.cart is the most likely candidate for the item id
-			// otherwise we can only find the item by searching for name and
-			// artist
-			return super.getAutomationController().getItemProvider().getItem(p.getCart());
-		} catch (IOException e) {
-			return null;
-		}
+		return null;
+		
+//		if (this.getFile() == null || !this.getFile().exists()) {
+//			// we can only find the currently playing item if a file is provided
+//			// and exists
+//			return null;
+//		}
+//
+//		NowPlaying p = NowPlayingParser.parseFromXML(this.getFile());
+//		if (p == null) {
+//			// could not parse the nowplaying file
+//			return null;
+//		}
+//
+//		try {
+//			// p.cart is the most likely candidate for the item id
+//			// otherwise we can only find the item by searching for name and
+//			// artist
+//			return super.getAutomationController().getItemProvider().getItem(p.getCart());
+//		} catch (IOException e) {
+//			return null;
+//		}
 	}
 
 	private File getFile()

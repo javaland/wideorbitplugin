@@ -87,7 +87,7 @@ public class NowPlayingConfigurationPanel extends JPanel
 					return dialog;
 				}
 			};
-			fc.setFileFilter(new FileNameExtensionFilter("XML Files", ".xml"));
+			fc.setFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
 			fc.setDialogTitle("Choose WideOrbit's Now playing XML Metadata file");
 			fc.setAcceptAllFileFilterUsed(false);
 

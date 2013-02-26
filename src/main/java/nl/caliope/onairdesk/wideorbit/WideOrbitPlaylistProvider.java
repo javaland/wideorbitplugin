@@ -1,6 +1,7 @@
 package nl.caliope.onairdesk.wideorbit;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 
 public class WideOrbitPlaylistProvider extends ScheduledItemProvider
 {
-	
+
 	private JSONObject configuration;
 
 	public WideOrbitPlaylistProvider(JSONObject configuration)
@@ -22,7 +23,6 @@ public class WideOrbitPlaylistProvider extends ScheduledItemProvider
 	@Override
 	public List<ScheduledItem> getScheduledItems(Date from, Date to) throws IOException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 }

@@ -28,10 +28,16 @@ public class DBConnector
 
 	public void connect(JSONObject configuration) throws SQLException
 	{
-		String url = String.format("jdbc:postgresql://%s:%d/%s",
-				configuration.optString("host", "localhost"),
-				configuration.optInt("port", 5432),
-				configuration.optString("database", "woar_server"));
+		String host = configuration.optString("host");
+		String database = configuration.optString("database");
+		int port = configuration.optInt("port", 5432);
+
+		if (host == null || host.isEmpty()
+				|| database == null || database.isEmpty()) {
+			return;
+		}
+
+		String url = String.format("jdbc:postgresql://%s:%d/%s", host, port, database);
 		String username = configuration.optString("username", "ras");
 		String password = configuration.optString("password", "dmarc");
 
