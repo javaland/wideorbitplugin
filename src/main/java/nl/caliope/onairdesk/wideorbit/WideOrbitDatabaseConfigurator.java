@@ -47,20 +47,18 @@ public class WideOrbitDatabaseConfigurator extends ProviderFactoryConfigurator
 	{
 		List<String> errors = new ArrayList<String>();
 		DBConnector connector = DBConnector.getInstance();
-		try {
-			if (connector.isConnected()) {
-				connector.disconnect();
-			}
 
+		if (connector.isConnected()) {
+			connector.disconnect();
+		}
+		try {
 			connector.connect(getConfiguration());
+		} catch (Exception e) {
 			if (!connector.isConnected()) {
 				errors.add("Could not connect to the database");
 			}
-		} catch (SQLException e) {
-			String message = "Failed to connect to the database";
-			errors.add(message);
-			logger.error(message, e);
 		}
+
 		return errors;
 	}
 }
