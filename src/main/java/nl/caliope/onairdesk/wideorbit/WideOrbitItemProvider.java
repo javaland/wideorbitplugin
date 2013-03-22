@@ -32,7 +32,7 @@ public class WideOrbitItemProvider extends ItemProvider
 	}
 
 	@Override
-	public Item getItem(String automationid) throws IOException
+	public Item byId(String automationid) throws IOException
 	{
 		try {
 			return itemRepo.find(automationid);

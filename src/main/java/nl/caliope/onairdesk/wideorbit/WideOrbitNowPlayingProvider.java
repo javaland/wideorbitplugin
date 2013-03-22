@@ -1,83 +1,99 @@
 package nl.caliope.onairdesk.wideorbit;
 
 import java.io.File;
-import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import nl.caliope.onairdesk.AutomationController;
 import nl.caliope.onairdesk.model.Item;
-import nl.caliope.onairdesk.provider.NowPlayingProvider;
+import nl.caliope.onairdesk.provider.AbstractNowPlayingProvider;
+import nl.caliope.onairdesk.provider.ItemProvider;
 import nl.caliope.onairdesk.wideorbit.xml.NowPlaying;
 import nl.caliope.onairdesk.wideorbit.xml.NowPlayingParser;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class WideOrbitNowPlayingProvider extends NowPlayingProvider
+public class WideOrbitNowPlayingProvider extends AbstractNowPlayingProvider
 {
 
+	private static final Logger logger = LoggerFactory.getLogger(WideOrbitNowPlayingProvider.class);
+
+	public static final String SQL_SEARCH_ITEM = "SELECT "
+			+ "\"public\".media_asset.media_asset_id as automationid "
+			+ "FROM \"public\".media_asset "
+			+ "WHERE \"public\".media_asset.title = ? "
+			+ "AND \"public\".media_asset.artist = ?";
+
+	private JSONObject configuration;
 	private File file;
 
 	public WideOrbitNowPlayingProvider(JSONObject configuration)
 	{
-		String path = configuration.optString("nowplaying_path", null);
-		if (path == null)
-			this.file = null;
-		else
-			this.file = new File(path);
-	}
-
-	@Override
-	public Item getPrevious(int n)
-	{
-		return null;
-	}
-
-	@Override
-	public Item getCurrent()
-	{
-		return null;
-		
-//		if (this.getFile() == null || !this.getFile().exists()) {
-//			// we can only find the currently playing item if a file is provided
-//			// and exists
-//			return null;
-//		}
-//
-//		NowPlaying p = NowPlayingParser.parseFromXML(this.getFile());
-//		if (p == null) {
-//			// could not parse the nowplaying file
-//			return null;
-//		}
-//
-//		try {
-//			// p.cart is the most likely candidate for the item id
-//			// otherwise we can only find the item by searching for name and
-//			// artist
-//			return super.getAutomationController().getItemProvider().getItem(p.getCart());
-//		} catch (IOException e) {
-//			return null;
-//		}
+		this.configuration = configuration;
+		this.file = getFile();
 	}
 
 	private File getFile()
 	{
-		return this.file;
+		String path = configuration.optString("nowplaying_path", null);
+		if (path == null)
+			return null;
+		else
+			return new File(path);
 	}
 
 	@Override
-	public Item getNext(int n)
+	public Item retrieveNowPlaying()
 	{
+		if (this.file == null || !this.file.exists()) {
+			// we can only find the currently playing item if a file is provided
+			// and exists
+			return null;
+		}
+
+		
+		AutomationController automationController = getAutomationController();
+		try {
+			NowPlaying p = NowPlayingParser.parseFromXML(this.file);
+			if (p == null) {
+				// could not parse the nowplaying file
+				return null;
+			}
+
+			int automationid = resolveItemId(p);
+			if (automationid > 0) {
+				ItemProvider provider = automationController.getItemProvider();
+				return provider.byId(String.valueOf(automationid));
+			}
+		} catch (Exception e) {
+			logger.error("failed to retrieve now playing", e);
+		}
 		return null;
 	}
 
-	@Override
-	public int getPreviousCount()
+	private int resolveItemId(NowPlaying nowPlaying) throws SQLException
 	{
-		return 0;
-	}
+		String title = nowPlaying.getTitle();
+		String artists = nowPlaying.getArtist();
 
-	@Override
-	public int getNextCount()
-	{
-		return 0;
+		DBConnector connector = DBConnector.getInstance();
+		if (!connector.isConnected()) {
+			connector.connect(configuration);
+		}
+
+		PreparedStatement stmt = connector.prepareStatement(SQL_SEARCH_ITEM);
+		stmt.setString(1, title);
+		stmt.setString(2, artists);
+
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			return rs.getInt(1);
+		}
+
+		return -1;
 	}
 
 }
